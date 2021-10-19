@@ -12,8 +12,17 @@ const io = new Server(httpServer);
 io.on("connection", (socket) => {
   console.log("User connected with ID: " + socket.id);
 
-  socket.on("new-message", (message) => {
+  socket.on("new-message", (message, room) => {
+    if (room) {
+      socket.to(room).emit("new-message", message);
+      return;
+    }
     socket.broadcast.emit("new-message", message);
+  });
+
+  socket.on("join-room", (roomName, callback) => {
+    socket.join(roomName);
+    callback();
   });
 });
 

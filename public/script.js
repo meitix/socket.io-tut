@@ -5,6 +5,8 @@ var roomForm = document.getElementById("room-form");
 newMessageForm.addEventListener("submit", submitNewMessage);
 roomForm.addEventListener("submit", joinRoom);
 
+var room;
+
 var socket = io();
 socket.on("connect", function () {
   addNewMessageToHistory("You are connected with ID: " + socket.id);
@@ -22,12 +24,15 @@ function submitNewMessage(e) {
   e.preventDefault();
   message = e.target.elements["message"];
   addNewMessageToHistory(message.value);
-  socket.emit("new-message", message.value);
+  socket.emit("new-message", message.value, room);
   message.value = "";
 }
 
 function joinRoom(e) {
   e.preventDefault();
   const roomName = e.target.elements["room-name"].value;
-  addNewMessageToHistory("Joined " + roomName);
+  socket.emit("join-room", roomName, () => {
+    room = roomName;
+    addNewMessageToHistory("Joined " + roomName);
+  });
 }
