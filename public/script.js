@@ -5,6 +5,11 @@ var roomForm = document.getElementById("room-form");
 newMessageForm.addEventListener("submit", submitNewMessage);
 roomForm.addEventListener("submit", joinRoom);
 
+var socket = io();
+socket.on("connect", function () {
+  addNewMessageToHistory("You are connected with ID: " + socket.id);
+});
+
 function addNewMessageToHistory(message) {
   const div = document.createElement("div");
   div.innerHTML = message;
