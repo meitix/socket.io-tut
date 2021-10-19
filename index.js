@@ -11,6 +11,10 @@ const io = new Server(httpServer);
 
 io.on("connection", (socket) => {
   console.log("User connected with ID: " + socket.id);
+
+  socket.on("new-message", (message) => {
+    socket.broadcast.emit("new-message", message);
+  });
 });
 
 const port = 3000;

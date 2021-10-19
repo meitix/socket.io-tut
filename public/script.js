@@ -10,6 +10,8 @@ socket.on("connect", function () {
   addNewMessageToHistory("You are connected with ID: " + socket.id);
 });
 
+socket.on("new-message", addNewMessageToHistory);
+
 function addNewMessageToHistory(message) {
   const div = document.createElement("div");
   div.innerHTML = message;
@@ -20,6 +22,7 @@ function submitNewMessage(e) {
   e.preventDefault();
   message = e.target.elements["message"];
   addNewMessageToHistory(message.value);
+  socket.emit("new-message", message.value);
   message.value = "";
 }
 
