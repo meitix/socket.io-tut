@@ -32,10 +32,22 @@ function addNewMessageToHistory(message) {
   historyContainer.appendChild(div);
 }
 
+var count = 0;
+setInterval(() => {
+  socket.volatile.emit("count", ++count);
+}, 1000);
+
 function submitNewMessage(e) {
   e.preventDefault();
   message = e.target.elements["message"];
   addNewMessageToHistory(message.value);
+  if (message.value === "d") {
+    socket.disconnect();
+    return;
+  }
+  if (message.value === "c") {
+    socket.connect();
+  }
   socket.emit("new-message", message.value, room);
   message.value = "";
 }

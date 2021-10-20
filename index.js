@@ -36,6 +36,8 @@ dashboardIo.on("connection", (socket) => {
 io.on("connection", (socket) => {
   console.log("User connected with ID: " + socket.id);
 
+  socket.on("count", console.log);
+
   socket.on("new-message", (message, room) => {
     if (room) {
       socket.to(room).emit("new-message", message);
