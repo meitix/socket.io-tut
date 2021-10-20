@@ -1,6 +1,7 @@
 const express = require("express");
 const http = require("http");
 const { Server } = require("socket.io");
+const { instrument } = require("@socket.io/admin-ui");
 
 const app = express();
 const httpServer = http.createServer(app);
@@ -28,3 +29,4 @@ io.on("connection", (socket) => {
 
 const port = 3000;
 httpServer.listen(port, () => console.log(`server is running on port ${port}`));
+instrument(io, { auth: false });
