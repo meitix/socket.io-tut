@@ -15,6 +15,12 @@ const io = new Server(httpServer, {
   },
 });
 
+const dashboardIo = io.of("/dashboard");
+
+dashboardIo.on("connection", (socket) => {
+  console.log("connected to dashboard with id: " + socket.id);
+});
+
 io.on("connection", (socket) => {
   console.log("User connected with ID: " + socket.id);
 

@@ -12,6 +12,13 @@ socket.on("connect", function () {
   addNewMessageToHistory("You are connected with ID: " + socket.id);
 });
 
+var dashboardSocket = io("http://localhost:3000/dashboard");
+dashboardSocket.on("connect", function () {
+  addNewMessageToHistory(
+    "You are connected to Dashboard with ID: " + dashboardSocket.id
+  );
+});
+
 socket.on("new-message", addNewMessageToHistory);
 
 function addNewMessageToHistory(message) {
