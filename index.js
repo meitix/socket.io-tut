@@ -8,7 +8,12 @@ const httpServer = http.createServer(app);
 
 app.use(express.static(__dirname + "/public"));
 
-const io = new Server(httpServer);
+const io = new Server(httpServer, {
+  cors: {
+    origin: ["https://admin.socket.io/"],
+    methods: ["GET", "POST"],
+  },
+});
 
 io.on("connection", (socket) => {
   console.log("User connected with ID: " + socket.id);
