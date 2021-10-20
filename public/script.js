@@ -12,12 +12,17 @@ socket.on("connect", function () {
   addNewMessageToHistory("You are connected with ID: " + socket.id);
 });
 
-var dashboardSocket = io("http://localhost:3000/dashboard");
+var dashboardSocket = io("http://localhost:3000/dashboard", {
+  auth: { token: "mahdi" },
+});
+
 dashboardSocket.on("connect", function () {
   addNewMessageToHistory(
     "You are connected to Dashboard with ID: " + dashboardSocket.id
   );
 });
+
+dashboardSocket.on("connect_error", addNewMessageToHistory);
 
 socket.on("new-message", addNewMessageToHistory);
 

@@ -17,8 +17,20 @@ const io = new Server(httpServer, {
 
 const dashboardIo = io.of("/dashboard");
 
+const validateToken = (token) => token;
+dashboardIo.use((socket, next) => {
+  const token = socket.handshake.auth.token;
+  if (token) {
+    socket.username = validateToken(token);
+    next();
+    return;
+  }
+
+  next(new Error("Token not found"));
+});
+
 dashboardIo.on("connection", (socket) => {
-  console.log("connected to dashboard with id: " + socket.id);
+  console.log(socket.username + " connected");
 });
 
 io.on("connection", (socket) => {
